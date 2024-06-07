@@ -49,6 +49,7 @@
     "format:check": "prettier --check **/*.{ts,js} !**/dist/** !**/node_modules/**",
     "lint": "eslint . --ext .ts",
     "start": "tsx demo/emulator-run.ts",
+    "start:wozmon": "tsx demo/wozmon-run.ts",
     "start:micropython": "tsx demo/micropython-run.ts",
     "start:circuitpython": "tsx demo/micropython-run.ts --circuitpython",
     "start:gdbdiff": "tsx debug/gdbdiff.ts",
