@@ -28,20 +28,22 @@ if (args.gdb) {
     console.log(`RP2040 GDB Server ready! Listening on port ${gdbServer.port}`);
 }
 mcu.uart[0].onByte = (value) => {
-    process.stdout.write(new Uint8Array([value]));
+    if (value === 0x0008 || value === 0x007F) { // Handle backspace and delete
+        process.stdout.write('\b \b'); // Moves cursor back, writes a space to erase the character, then moves cursor back again
+    } else {
+        process.stdout.write(new Uint8Array([value]));
+    }
 };
 
 if (process.stdin.isTTY) {
-    console.log('***********************************')
-    console.log("*     Process is in TTY mode.     *");
-    console.log("*       Raw mode disabled.        *");
-    console.log('***********************************')
-    process.stdin.setRawMode(false);
+    process.stdin.setRawMode(true);
 }
 process.stdin.on('data', (chunk) => {
     // 24 is Ctrl+X
     if (chunk[0] === 24) {
         process.exit(0);
+    } else if (chunk[0] === 0x0008 || chunk[0] === 0x007F) {
+        chunk[0] = 0x0008;
     }
     for (const byte of chunk) {
         mcu.uart[0].feedByte(byte);
