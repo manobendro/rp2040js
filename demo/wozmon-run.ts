@@ -2,7 +2,7 @@ import minimist from 'minimist';
 import { GDBTCPServer } from '../src/gdb/gdb-tcp-server.js';
 import { Simulator } from '../src/simulator.js';
 import { ConsoleLogger, LogLevel } from '../src/utils/logging.js';
-import { bootromB1 } from './bootrom.js';
+import { bootromB2 } from './bootrom.js';
 import { loadUF2 } from './load-flash.js';
 
 const args = minimist(process.argv.slice(2), {
@@ -15,7 +15,7 @@ const args = minimist(process.argv.slice(2), {
 });
 const simulator = new Simulator();
 const mcu = simulator.rp2040;
-mcu.loadBootrom(bootromB1);
+mcu.loadBootrom(bootromB2);
 mcu.logger = new ConsoleLogger(LogLevel.Error);
 
 let imageName: string = args.image ?? 'wozmon-rp2040.uf2';
